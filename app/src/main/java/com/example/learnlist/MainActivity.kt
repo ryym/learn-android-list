@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val list = findViewById<ListView>(R.id.spices)
         val adapter = ArrayAdapter<String>(
             this,
-            android.R.layout.simple_list_item_1,
+            android.R.layout.simple_list_item_single_choice,
             spices
         )
         list.adapter = adapter
@@ -34,9 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         list.setOnItemLongClickListener { parent, view, position, id ->
             val clicked = (view as TextView).text.toString()
-
-            // 上から見て最初にマッチしたテキストの要素を消すっぽい。
-            adapter.remove(clicked)
+            Log.d("main", clicked)
 
             // イベントを消費しない。消費するとこの次の click listener のイベントは呼ばれなくなる。
             false
