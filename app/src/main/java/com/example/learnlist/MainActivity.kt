@@ -2,8 +2,11 @@ package com.example.learnlist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -11,7 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val spices = arrayOf(
+        val spices = mutableListOf(
             "胡椒",
             "ターメリック",
             "コリアンダー",
@@ -21,10 +24,27 @@ class MainActivity : AppCompatActivity() {
         )
 
         val list = findViewById<ListView>(R.id.spices)
-        list.adapter = ArrayAdapter<String>(
+        val adapter = ArrayAdapter<String>(
             this,
             android.R.layout.simple_list_item_1,
             spices
         )
+        list.adapter = adapter
+
+
+        list.setOnItemLongClickListener { parent, view, position, id ->
+            val clicked = (view as TextView).text.toString()
+
+            // 上から見て最初にマッチしたテキストの要素を消すっぽい。
+            adapter.remove(clicked)
+
+            // イベントを消費しない。消費するとこの次の click listener のイベントは呼ばれなくなる。
+            false
+        }
+
+        list.setOnItemClickListener { parent, view, position, id ->
+            val clicked = (view as TextView).text.toString()
+            Toast.makeText(this, clicked, Toast.LENGTH_SHORT).show()
+        }
     }
 }
