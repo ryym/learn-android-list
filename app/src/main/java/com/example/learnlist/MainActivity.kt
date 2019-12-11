@@ -3,10 +3,8 @@ package com.example.learnlist
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.core.view.children
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,13 +24,13 @@ class MainActivity : AppCompatActivity() {
         val list = findViewById<ListView>(R.id.spices)
         val adapter = ArrayAdapter<String>(
             this,
-            android.R.layout.simple_list_item_single_choice,
+            android.R.layout.simple_list_item_multiple_choice,
             spices
         )
         list.adapter = adapter
 
 
-        list.setOnItemLongClickListener { parent, view, position, id ->
+        list.setOnItemLongClickListener { parent, view, positnion, id ->
             val clicked = (view as TextView).text.toString()
             Log.d("main", clicked)
 
@@ -41,8 +39,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         list.setOnItemClickListener { parent, view, position, id ->
-            val clicked = (view as TextView).text.toString()
-            Toast.makeText(this, clicked, Toast.LENGTH_SHORT).show()
+            var msg = "選択したのは: "
+            for (child in list.children) {
+                val txt = child as CheckedTextView
+                if (txt.isChecked) {
+                    msg += txt.text.toString() + ","
+                }
+            }
+            msg = msg.substring(0, msg.length - 1)
+            Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
         }
     }
 }
