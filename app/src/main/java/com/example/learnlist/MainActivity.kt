@@ -14,7 +14,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setupSpiceList()
+        setupSongList()
+    }
 
+    private fun setupSpiceList() {
         val spices = mutableListOf(
             "胡椒",
             "ターメリック",
@@ -68,5 +72,37 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun setupSongList() {
+        val songs = arrayOf(
+            Song(title = "革命のエチュード", tag = "ピアノ"),
+            Song(title = "G線上のアリア", tag = "バイオリン"),
+            Song(title = "シャコンヌ", tag = "チェロ"),
+            Song(title = "夜の女王のアリア", tag = "声楽"),
+            Song(title = "春の海", tag = "?")
+        )
+
+        // https://developer.android.com/reference/android/widget/SimpleAdapter
+        // データを List<Map<String, String>> として渡し、マップのキーと TextView の ID を
+        // 対応づけてデータを表示する事ができる。 TextView のみのシンプルなリストを作るのには使える。
+        val adapter = SimpleAdapter(
+            this,
+            songs.map { it.toMap() },
+            R.layout.list_item,
+            arrayOf("title", "tag", "desc"),
+            intArrayOf(R.id.title, R.id.tag, R.id.desc)
+        )
+
+        val list = findViewById<ListView>(R.id.songs)
+        list.adapter = adapter
+    }
+
+}
+
+data class Song(val title: String, val tag: String) {
+    fun toMap(): Map<String, String> {
+        val desc = "Some description for $title should be here"
+        return mapOf("title" to title, "tag" to tag, "desc" to desc)
     }
 }
