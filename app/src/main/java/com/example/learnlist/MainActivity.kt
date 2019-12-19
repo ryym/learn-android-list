@@ -8,6 +8,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.core.view.children
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,10 +20,13 @@ class MainActivity : AppCompatActivity() {
         setupSpiceList()
         setupSongList()
         setupSongListByCustomAdapter()
+        setupSongCardList()
+
 
         val sections = mapOf(
             R.id.show_spices to R.id.spices,
-            R.id.show_songs to R.id.songs_container
+            R.id.show_songs to R.id.songs_container,
+            R.id.show_song_cards to R.id.song_cards
         )
         val radios = findViewById<RadioGroup>(R.id.shownSections)
         radios.setOnCheckedChangeListener { _, checkedId ->
@@ -89,20 +95,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSongList() {
-        val songs = arrayOf(
-            Song(title = "革命のエチュード", tag = "ピアノ"),
-            Song(title = "G線上のアリア", tag = "バイオリン"),
-            Song(title = "シャコンヌ", tag = "チェロ"),
-            Song(title = "夜の女王のアリア", tag = "声楽"),
-            Song(title = "春の海", tag = "?")
-        )
+        val songs = makeSongs().map { it.toMap() }
 
         // https://developer.android.com/reference/android/widget/SimpleAdapter
         // データを List<Map<String, String>> として渡し、マップのキーと TextView の ID を
         // 対応づけてデータを表示する事ができる。 TextView のみのシンプルなリストを作るのには使える。
         val adapter = SimpleAdapter(
             this,
-            songs.map { it.toMap() },
+            songs,
             R.layout.list_item,
             arrayOf("title", "tag", "desc"),
             intArrayOf(R.id.title, R.id.tag, R.id.desc)
@@ -113,23 +113,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupSongListByCustomAdapter() {
-        val songs = arrayListOf(
-            ListItem(id = 0, title = "革命のエチュード", tag = "ピアノ"),
-            ListItem(id = 1, title = "G線上のアリア", tag = "バイオリン"),
-            ListItem(id = 2, title = "シャコンヌ", tag = "チェロ"),
-            ListItem(id = 3, title = "夜の女王のアリア", tag = "声楽"),
-            ListItem(id = 4, title = "春の海", tag = "?")
-        )
-
-        val adapter = MyListAdapter(this, songs, R.layout.list_item)
+        val adapter = MyListAdapter(this, makeSongs(), R.layout.list_item)
         val list = findViewById<ListView>(R.id.songs2)
         list.adapter = adapter
     }
-}
 
-data class Song(val title: String, val tag: String) {
-    fun toMap(): Map<String, String> {
-        val desc = "Some description for $title should be here"
-        return mapOf("title" to title, "tag" to tag, "desc" to desc)
+    private fun setupSongCardList() {
+        val songCardsLayoutManager = LinearLayoutManager(this).apply {
+            orientation = LinearLayoutManager.VERTICAL
+        }
+        // val songCardsLayoutManager = GridLayoutManager(this, 2)
+
+        findViewById<RecyclerView>(R.id.song_cards).apply {
+            setHasFixedSize(false)
+            adapter = SongCardListAdapter(makeSongs())
+            layoutManager = songCardsLayoutManager
+        }
+    }
+
+    private fun makeSongs(): ArrayList<Song> {
+        return arrayListOf(
+            Song(id = 0, title = "革命のエチュード", tag = "ピアノ"),
+            Song(id = 1, title = "G線上のアリア", tag = "バイオリン"),
+            Song(id = 2, title = "シャコンヌ", tag = "チェロ"),
+            Song(id = 3, title = "夜の女王のアリア", tag = "声楽"),
+            Song(id = 4, title = "春の海", tag = "?")
+        )
     }
 }

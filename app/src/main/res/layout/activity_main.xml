@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingTop="16sp"
+    android:paddingBottom="16sp"
+    android:paddingLeft="16sp"
+    android:paddingRight="16sp"
     tools:context=".MainActivity">
 
     <RadioGroup
@@ -24,14 +28,20 @@
             android:id="@+id/show_songs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="songs" />
+
+        <RadioButton
+            android:id="@+id/show_song_cards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="song cards" />
     </RadioGroup>
 
     <ListView
         android:id="@+id/spices"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:choiceMode="multipleChoiceModal"></ListView>
 
     <LinearLayout
@@ -52,5 +62,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12sp" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/song_cards"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
