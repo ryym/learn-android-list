@@ -2,7 +2,6 @@ package com.example.learnlist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
@@ -16,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setupSpiceList()
         setupSongList()
+        setupSongListByCustomAdapter()
     }
 
     private fun setupSpiceList() {
@@ -98,6 +98,19 @@ class MainActivity : AppCompatActivity() {
         list.adapter = adapter
     }
 
+    private fun setupSongListByCustomAdapter() {
+        val songs = arrayListOf(
+            ListItem(id = 0, title = "革命のエチュード", tag = "ピアノ"),
+            ListItem(id = 1, title = "G線上のアリア", tag = "バイオリン"),
+            ListItem(id = 2, title = "シャコンヌ", tag = "チェロ"),
+            ListItem(id = 3, title = "夜の女王のアリア", tag = "声楽"),
+            ListItem(id = 4, title = "春の海", tag = "?")
+        )
+
+        val adapter = MyListAdapter(this, songs, R.layout.list_item)
+        val list = findViewById<ListView>(R.id.songs2)
+        list.adapter = adapter
+    }
 }
 
 data class Song(val title: String, val tag: String) {
