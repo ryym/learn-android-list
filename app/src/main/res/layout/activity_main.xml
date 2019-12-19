@@ -7,23 +7,50 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/songs2"
+    <RadioGroup
+        android:id="@+id/shownSections"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12sp" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="10sp">
 
-    <ListView
-        android:id="@+id/songs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12sp"/>
+        <RadioButton
+            android:id="@+id/show_spices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="spices" />
+
+        <RadioButton
+            android:id="@+id/show_songs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="songs" />
+    </RadioGroup>
 
     <ListView
         android:id="@+id/spices"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:choiceMode="multipleChoiceModal">
-    </ListView>
+        android:layout_height="wrap_content"
+        android:choiceMode="multipleChoiceModal"></ListView>
+
+    <LinearLayout
+        android:id="@+id/songs_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/songs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12sp" />
+
+        <ListView
+            android:id="@+id/songs2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12sp" />
+    </LinearLayout>
 
 </LinearLayout>

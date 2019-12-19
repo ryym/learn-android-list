@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
 import androidx.core.view.children
 
@@ -16,6 +17,19 @@ class MainActivity : AppCompatActivity() {
         setupSpiceList()
         setupSongList()
         setupSongListByCustomAdapter()
+
+        val sections = mapOf(
+            R.id.show_spices to R.id.spices,
+            R.id.show_songs to R.id.songs_container
+        )
+        val radios = findViewById<RadioGroup>(R.id.shownSections)
+        radios.setOnCheckedChangeListener { _, checkedId ->
+            for ((radioId, sectionId) in sections) {
+                val view = findViewById<View>(sectionId)
+                view.visibility = if (radioId == checkedId) View.VISIBLE else View.GONE
+            }
+        }
+        radios.check(R.id.show_spices)
     }
 
     private fun setupSpiceList() {
